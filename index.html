@@ -1,42 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My First GitHub Page</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at top right, #0b0c10, #1f2833);
-      color: #66fcf1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-    p { color: #c5c6c7; max-width: 600px; }
-    a {
-      margin-top: 2rem;
-      padding: 0.7rem 1.5rem;
-      border: 2px solid #45a29e;
-      border-radius: 8px;
-      color: #45a29e;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    a:hover { background: #45a29e; color: #0b0c10; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmix - Astronomy Picture of the Day</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the app */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Style for the date picker icon */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(1) brightness(1.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b; /* A dark indigo */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #4f46e5; /* A brighter indigo */
+            border-radius: 10px;
+            border: 2px solid #1e1b4b;
+        }
+        /* Loading Spinner */
+        .loader {
+            width: 50px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: 
+                radial-gradient(farthest-side, #a78bfa 94%, #0000) top/8px 8px no-repeat,
+                conic-gradient(#0000 30%, #a78bfa);
+            -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+            mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+            animation: l13 1s infinite linear;
+        }
+        @keyframes l13 {
+            100% { transform: rotate(1turn) }
+        }
+    </style>
 </head>
-<body>
-  <h1>🚀 Hello Universe!</h1>
-  <p>
-    This is my first static website hosted <strong>completely free</strong> on GitHub Pages.  
-    You can put any HTML, CSS, or JavaScript here.
-  </p>
-  <a href="https://github.com" target="_blank">Visit GitHub →</a>
+<body class="bg-gray-900 text-gray-200 antialiased">
+    <!-- Background Gradient -->
+    <div class="absolute top-0 left-0 -z-10 h-full w-full bg-slate-950">
+        <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+        <div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+    </div>
+
+    <div class="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="w-full max-w-5xl text-center mb-6">
+            <h1 class="brand-font text-4xl sm:text-5xl font-bold text-white tracking-wider">
+                <span class="text-violet-400">C</span>O<span class="text-indigo-400">S</span>M<span class="text-fuchsia-400">I</span>X
+            </h1>
+            <p class="text-indigo-200 mt-1">Your Daily Dose of the Cosmos</p>
+        </header>
+
+        <!-- Main Content Card -->
+        <main id="app-container" class="w-full max-w-5xl bg-black bg-opacity-30 backdrop-blur-lg rounded-2xl shadow-2xl shadow-indigo-500/10 overflow-hidden flex flex-col">
+            
+            <!-- Loader -->
+            <div id="loader-container" class="flex items-center justify-center min-h-[60vh]">
+                <div class="loader"></div>
+            </div>
+
+            <!-- APOD Content (hidden by default) -->
+            <div id="content-container" class="hidden">
+                <!-- Media Display Area -->
+                <div id="media-container" class="w-full bg-black aspect-video flex items-center justify-center">
+                    <!-- Image or Iframe will be inserted here -->
+                </div>
+
+                <!-- Information Area -->
+                <div class="p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                        <h2 id="apod-title" class="text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-0"></h2>
+                        <span id="apod-date" class="text-sm text-indigo-300 font-mono"></span>
+                    </div>
+
+                    <p id="apod-explanation" class="text-gray-300 leading-relaxed text-base lg:text-lg"></p>
+
+                    <p id="apod-copyright" class="text-xs text-gray-500 mt-6 italic"></p>
+                </div>
+            </div>
+
+             <!-- Controls Footer -->
+            <footer class="bg-gray-900 bg-opacity-50 mt-auto p-4 flex flex-col sm:flex-row items-center justify-center gap-4 border-t border-t-indigo-900/50">
+                <div class="relative w-full sm:w-auto">
+                     <input type="date" id="date-picker" class="bg-indigo-900/50 text-indigo-200 border border-indigo-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-violet-500 focus:outline-none w-full sm:w-auto transition-colors duration-300 appearance-none">
+                </div>
+                <button id="random-btn" class="w-full sm:w-auto bg-violet-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-violet-700 focus:ring-2 focus:ring-violet-400 focus:outline-none transition-all duration-300 transform hover:scale-105">
+                    Explore Random
+                </button>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const contentContainer = document.getElementById('content-container');
+            const loaderContainer = document.getElementById('loader-container');
+            const mediaContainer = document.getElementById('media-container');
+            const apodTitle = document.getElementById('apod-title');
+            const apodDate = document.getElementById('apod-date');
+            const apodExplanation = document.getElementById('apod-explanation');
+            const apodCopyright = document.getElementById('apod-copyright');
+            const datePicker = document.getElementById('date-picker');
+            const randomBtn = document.getElementById('random-btn');
+
+            // --- API Configuration ---
+            const API_KEY = 'DEMO_KEY'; // Using NASA's demo key
+            const API_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
+            
+            // --- State ---
+            let isLoading = false;
+
+            // --- Functions ---
+
+            /**
+             * Formats a Date object into YYYY-MM-DD string
+             * @param {Date} date - The date to format
+             * @returns {string} The formatted date string
+             */
+            const formatDate = (date) => date.toISOString().split('T')[0];
+
+            /**
+             * Sets the loading state for the UI
+             * @param {boolean} loading - Whether the app is loading
+             */
+            const setLoadingState = (loading) => {
+                isLoading = loading;
+                if (loading) {
+                    contentContainer.classList.add('hidden');
+                    loaderContainer.classList.remove('hidden');
+                    loaderContainer.classList.add('flex');
+                } else {
+                    loaderContainer.classList.add('hidden');
+                    loaderContainer.classList.remove('flex');
+                    contentContainer.classList.remove('hidden');
+                }
+            };
+            
+            /**
+             * Renders the fetched APOD data to the DOM
+             * @param {object} data - The APOD data from NASA API
+             */
+            const renderApod = (data) => {
+                mediaContainer.innerHTML = ''; // Clear previous media
+
+                if (data.media_type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = data.hdurl || data.url;
+                    img.alt = data.title;
+                    img.className = 'w-full h-full object-contain transition-opacity duration-500 opacity-0';
+                    img.onload = () => { img.style.opacity = 1; };
+                    img.onerror = () => { 
+                        img.src = 'https://placehold.co/1920x1080/000000/666666?text=Image+Not+Found';
+                        apodTitle.textContent = "Oops! Image could not be loaded.";
+                    };
+                    mediaContainer.appendChild(img);
+                } else if (data.media_type === 'video') {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = data.url;
+                    iframe.title = data.title;
+                    iframe.allow = 'fullscreen';
+                    iframe.className = 'w-full h-full aspect-video';
+                    mediaContainer.appendChild(iframe);
+                }
+
+                apodTitle.textContent = data.title || 'Untitled';
+                apodDate.textContent = data.date || 'Unknown Date';
+                apodExplanation.textContent = data.explanation || 'No explanation available.';
+                apodCopyright.textContent = data.copyright ? `© ${data.copyright}` : '';
+            };
+
+            /**
+             * Fetches APOD data for a specific date
+             * @param {string} [date] - Optional date in YYYY-MM-DD format
+             */
+            const fetchApod = async (date) => {
+                if (isLoading) return;
+                setLoadingState(true);
+
+                let url = API_URL;
+                if (date) {
+                    url += `&date=${date}`;
+                }
+
+                try {
+                    // Exponential backoff retry logic
+                    let response;
+                    for (let i = 0; i < 3; i++) {
+                         response = await fetch(url);
+                         if (response.ok) break;
+                         await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+                    }
+                   
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.msg || `HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    renderApod(data);
+                } catch (error) {
+                    console.error("Failed to fetch APOD data:", error);
+                    mediaContainer.innerHTML = '';
+                    apodTitle.textContent = 'Failed to load data';
+                    apodExplanation.textContent = `There was an error fetching data from the NASA API. ${error.message}. Please try a different date or try again later.`;
+                    apodDate.textContent = '';
+                    apodCopyright.textContent = '';
+                } finally {
+                    setLoadingState(false);
+                }
+            };
+
+            /**
+             * Generates a random date between APOD's start and today
+             * @returns {string} A random date string in YYYY-MM-DD format
+             */
+            const getRandomDate = () => {
+                const startDate = new Date('1995-06-16'); // APOD start date
+                const endDate = new Date();
+                const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+                return formatDate(new Date(randomTime));
+            };
+
+            // --- Event Listeners ---
+            randomBtn.addEventListener('click', () => {
+                const randomDate = getRandomDate();
+                datePicker.value = randomDate;
+                fetchApod(randomDate);
+            });
+
+            datePicker.addEventListener('change', (e) => {
+                fetchApod(e.target.value);
+            });
+
+            // --- Initial Load ---
+            const today = formatDate(new Date());
+            datePicker.value = today;
+            datePicker.max = today;
+            fetchApod(); // Fetch today's picture on initial load
+        });
+    </script>
 </body>
 </html>
