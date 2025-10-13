@@ -228,13 +228,35 @@
         }
     </style>
 </head>
+<script type="module">
+    function initMenuButton() {
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const menuLinks = document.getElementById('menu-links');
+
+    // Toggles the menu when the button is clicked
+    menuToggleBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents the document click listener from firing right away
+        menuLinks.classList.toggle('open');
+    });
+
+    // Closes the menu if you click anywhere else on the page
+    document.addEventListener('click', (event) => {
+        if (!menuLinks.contains(event.target) && !menuToggleBtn.contains(event.target)) {
+            menuLinks.classList.remove('open');
+        }
+    });
+}
+
+// Call the function to activate the button
+initMenuButton();
+</script>
+    
 <body>
     <div id="floating-menu-container">
         <button id="menu-toggle-btn">☰</button>
         <div id="menu-links">
-            <a href="https://en.wikipedia.org/wiki/Tesseract" target="_blank">About Tesseracts</a>
-            <a href="https://threejs.org/" target="_blank">Powered by Three.js</a>
-            <a href="#" target="_blank">Project Source</a>
+            
+            <a href="tessaract.html" target="_blank">tessaract</a>
         </div>
     </div>
 
