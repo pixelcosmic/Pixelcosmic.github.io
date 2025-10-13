@@ -1,0 +1,94 @@
+<div id="floating-menu-container">
+    <button id="menu-toggle-btn">☰</button>
+    <div id="menu-links">
+        <a href="#" target="_blank">Link 1</a>
+        <a href="#" target="_blank">Link 2</a>
+        <a href="#" target="_blank">Link 3</a>
+    </div>
+</div>
+
+
+
+/* --- Collapsible Menu Styles --- */
+#floating-menu-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 20;
+    text-align: right;
+}
+#menu-toggle-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(45deg, #00ffff, #0088ff);
+    color: white;
+    font-size: 24px;
+    line-height: 50px; /* Center icon */
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 200, 255, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#menu-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 200, 255, 0.6);
+}
+#menu-links {
+    background-color: rgba(20, 20, 30, 0.9);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform-origin: top right;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+}
+#menu-links.open {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+#menu-links a {
+    color: #00ffff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+#menu-links a:hover {
+    background-color: rgba(0, 255, 255, 0.2);
+}
+
+
+
+
+
+
+
+function initMenuButton() {
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const menuLinks = document.getElementById('menu-links');
+
+    // Toggles the menu when the button is clicked
+    menuToggleBtn.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents the document click listener from firing right away
+        menuLinks.classList.toggle('open');
+    });
+
+    // Closes the menu if you click anywhere else on the page
+    document.addEventListener('click', (event) => {
+        if (!menuLinks.contains(event.target) && !menuToggleBtn.contains(event.target)) {
+            menuLinks.classList.remove('open');
+        }
+    });
+}
+
+// Call the function to activate the button
+initMenuButton();
