@@ -3,223 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyperrealistic Solar System</title>
+    <title>CSS Solar System</title>
     <style>
         body {
             margin: 0;
-            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000010;
             font-family: 'Inter', sans-serif;
-            background-color: #000;
-            color: #fff;
+            overflow: hidden;
         }
-        #info {
+
+        /* The main container for the solar system */
+        .solar-system {
+            position: relative;
+            width: 80vmin; /* Use vmin to keep it responsive and circular */
+            height: 80vmin;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* General styles for all orbital paths */
+        .orbit {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            max-width: 300px;
-            font-size: 12px;
-            line-height: 1.5;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: orbit-rotation linear infinite;
         }
-        h1 {
-            margin: 0 0 5px 0;
-            font-size: 18px;
+
+        /* General styles for all celestial bodies */
+        .planet, .sun, .moon {
+            border-radius: 50%;
+            position: absolute;
         }
-        p {
-            margin: 0;
+
+        /* The Sun */
+        .sun {
+            width: 15%;
+            height: 15%;
+            background: radial-gradient(circle, #ffd700, #ff8c00, #ff4500);
+            box-shadow: 0 0 50px #ff8c00, 0 0 100px #ff4500;
         }
-        a {
-            color: #87ceeb;
+
+        /* --- Planet & Orbit Definitions --- */
+
+        /* Mercury */
+        .mercury-orbit {
+            width: 25%;
+            height: 25%;
+            animation-duration: 8.8s;
+        }
+        .mercury {
+            width: 8%;
+            height: 8%;
+            background: #a9a9a9;
+            top: -4%;
+        }
+
+        /* Venus */
+        .venus-orbit {
+            width: 35%;
+            height: 35%;
+            animation-duration: 22.5s;
+        }
+        .venus {
+            width: 12%;
+            height: 12%;
+            background: #deb887;
+            top: -6%;
+        }
+
+        /* Earth */
+        .earth-orbit {
+            width: 48%;
+            height: 48%;
+            animation-duration: 36.5s;
+        }
+        .earth {
+            width: 13%;
+            height: 13%;
+            background: #4682b4;
+            top: -6.5%;
+            /* This is the pivot point for the moon's orbit */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Moon */
+        .moon-orbit {
+            width: 180%;
+            height: 180%;
+            border-width: 0.5px;
+            animation-duration: 2.7s;
+            position: relative;
+        }
+        .moon {
+            width: 20%;
+            height: 20%;
+            background: #d3d3d3;
+            top: -10%;
+        }
+
+        /* Mars */
+        .mars-orbit {
+            width: 62%;
+            height: 62%;
+            animation-duration: 68.7s;
+        }
+        .mars {
+            width: 9%;
+            height: 9%;
+            background: #cd5c5c;
+            top: -4.5%;
+        }
+
+        /* Jupiter */
+        .jupiter-orbit {
+            width: 80%;
+            height: 80%;
+            animation-duration: 120s; /* Scaled down for viewing */
+        }
+        .jupiter {
+            width: 20%;
+            height: 20%;
+            background: #c19a6b;
+            top: -10%;
+        }
+
+        /* Saturn */
+        .saturn-orbit {
+            width: 100%;
+            height: 100%;
+            animation-duration: 290s; /* Scaled down */
+        }
+        .saturn {
+            width: 18%;
+            height: 18%;
+            background: #e3d1ab;
+            top: -9%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .saturn-ring {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            border: 4px solid rgba(227, 209, 171, 0.7);
+            border-radius: 50%;
+            transform: rotateX(75deg);
+        }
+
+        /* Animation for the orbital rotation */
+        @keyframes orbit-rotation {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="solar-system">
+        <div class="sun"></div>
+        
+        <div class="orbit mercury-orbit">
+            <div class="planet mercury"></div>
+        </div>
+        
+        <div class="orbit venus-orbit">
+            <div class="planet venus"></div>
+        </div>
 
-    <div id="info">
-        <h1>Our Solar System</h1>
-        <p>A 3D simulation created with Three.js. Use your mouse to explore:</p>
-        <ul>
-            <li><b>Left-click + drag:</b> Orbit camera</li>
-            <li><b>Scroll wheel:</b> Zoom in/out</li>
-            <li><b>Right-click + drag:</b> Pan camera</li>
-        </ul>
-        <p>Distances and sizes are artistically scaled for visibility.</p>
+        <div class="orbit earth-orbit">
+            <div class="planet earth">
+                <div class="orbit moon-orbit">
+                    <div class="moon"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="orbit mars-orbit">
+            <div class="planet mars"></div>
+        </div>
+        
+        <div class="orbit jupiter-orbit">
+            <div class="planet jupiter"></div>
+        </div>
+        
+        <div class="orbit saturn-orbit">
+            <div class="planet saturn">
+                <div class="saturn-ring"></div>
+            </div>
+        </div>
+
     </div>
-
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        // Scene, Camera, and Renderer setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 20000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        camera.position.z = 250;
-        camera.position.y = 50;
-        camera.lookAt(0, 0, 0);
-
-        // Controls
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-
-        // Texture Loader
-        const textureLoader = new THREE.TextureLoader();
-        
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-        scene.add(ambientLight);
-
-        // --- Celestial Body Creation ---
-
-        // Sun
-        const sunGeometry = new THREE.SphereGeometry(35, 64, 64);
-        const sunTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/sun.jpg');
-        const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
-        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-        scene.add(sun);
-        
-        const sunLight = new THREE.PointLight(0xffffff, 3.5, 10000);
-        sun.add(sunLight);
-
-
-        // Starfield Background
-        const starGeometry = new THREE.SphereGeometry(15000, 64, 64);
-        const starTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/milkyway_box.jpg');
-        const starMaterial = new THREE.MeshBasicMaterial({
-            map: starTexture,
-            side: THREE.BackSide
-        });
-        const starfield = new THREE.Mesh(starGeometry, starMaterial);
-        scene.add(starfield);
-
-        // Helper function to create celestial bodies
-        function createPlanet(name, size, textureUrl, distance, orbitalSpeed, rotationSpeed, hasRings = false, moons = []) {
-            const geometry = new THREE.SphereGeometry(size, 32, 32);
-            const texture = textureLoader.load(textureUrl);
-            const material = new THREE.MeshStandardMaterial({ map: texture });
-            const planet = new THREE.Mesh(geometry, material);
-
-            const planetContainer = new THREE.Object3D();
-            planetContainer.add(planet);
-            scene.add(planetContainer);
-
-            planet.position.x = distance;
-            
-            // Rings
-            if (hasRings) {
-                const ringGeometry = new THREE.RingGeometry(size * 1.5, size * 2.5, 64);
-                const ringTexture = textureLoader.load(hasRings.texture);
-                const ringMaterial = new THREE.MeshBasicMaterial({ 
-                    map: ringTexture, 
-                    side: THREE.DoubleSide,
-                    transparent: true,
-                    opacity: 0.8
-                });
-                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-                ring.rotation.x = -0.5 * Math.PI;
-                planet.add(ring);
-            }
-
-            // Moons
-            moons.forEach(moonData => {
-                const moon = createMoon(moonData.size, moonData.texture, moonData.distance);
-                moon.pivot.userData.orbitalSpeed = moonData.orbitalSpeed;
-                planet.add(moon.pivot);
-            });
-
-            return { mesh: planet, container: planetContainer, orbitalSpeed, rotationSpeed };
-        }
-        
-        function createMoon(size, textureUrl, distance) {
-            const geometry = new THREE.SphereGeometry(size, 16, 16);
-            const texture = textureLoader.load(textureUrl);
-            const material = new THREE.MeshStandardMaterial({ map: texture });
-            const moon = new THREE.Mesh(geometry, material);
-            const moonPivot = new THREE.Object3D();
-            moon.position.x = distance;
-            moonPivot.add(moon);
-            return { mesh: moon, pivot: moonPivot };
-        }
-
-
-        // Planets Data and Creation
-        const planets = [
-            createPlanet('Mercury', 3, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/mercury.jpg', 60, 0.04, 0.01),
-            createPlanet('Venus', 5, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/venus.jpg', 100, 0.02, 0.005),
-            createPlanet('Earth', 6, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg', 150, 0.01, 0.02, false, [
-                { name: 'Moon', size: 1.5, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 15, orbitalSpeed: 0.1 }
-            ]),
-            createPlanet('Mars', 4, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/mars.jpg', 200, 0.008, 0.018, false, [
-                 { name: 'Phobos', size: 0.5, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 8, orbitalSpeed: 0.2 },
-                 { name: 'Deimos', size: 0.3, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 12, orbitalSpeed: 0.15 }
-            ]),
-            createPlanet('Jupiter', 15, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/jupiter.jpg', 350, 0.004, 0.05, false, [
-                { name: 'Io', size: 1, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 20, orbitalSpeed: 0.2 },
-                { name: 'Europa', size: 1, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 25, orbitalSpeed: 0.15 },
-                { name: 'Ganymede', size: 1.5, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 30, orbitalSpeed: 0.1 },
-                { name: 'Callisto', size: 1.3, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 35, orbitalSpeed: 0.08 }
-            ]),
-            createPlanet('Saturn', 12, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/saturn.jpg', 550, 0.002, 0.045, { texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/saturn_ring.png' }, [
-                 { name: 'Titan', size: 1.5, texture: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon.jpg', distance: 25, orbitalSpeed: 0.09 }
-            ]),
-            createPlanet('Uranus', 8, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/uranus.jpg', 750, 0.001, 0.03),
-            createPlanet('Neptune', 7.5, 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/neptune.jpg', 950, 0.0005, 0.028),
-        ];
-
-        // --- Animation Loop ---
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            const delta = clock.getDelta();
-            
-            // Rotate sun
-            sun.rotation.y += 0.001;
-
-            // Animate planets and moons
-            planets.forEach(p => {
-                p.container.rotation.y += p.orbitalSpeed * 0.2; // Adjusted for better visual speed
-                p.mesh.rotation.y += p.rotationSpeed;
-                
-                // Animate moons
-                p.mesh.children.forEach(child => {
-                    // This handles both rings and moon pivots
-                    if (child.userData.orbitalSpeed) {
-                        child.rotation.y += child.userData.orbitalSpeed;
-                    }
-                });
-            });
-
-
-            controls.update();
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // Handle window resizing
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-    </script>
 </body>
 </html>
